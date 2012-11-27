@@ -1,0 +1,1 @@
+Secret Santa application.  Track signups and email addresses to make it easy to do Secret Santa with your friends!
