@@ -31,6 +31,7 @@ class MainPage(Handler):
 		
 class ThankYou(Handler):
 	def post(self):
+	
 		fullname = self.request.get('fullname')
 		emailaddress=self.request.get('emailaddress')
 		p = Person(name=fullname, email=emailaddress)
