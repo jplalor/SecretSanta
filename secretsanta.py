@@ -4,6 +4,7 @@ import cgi
 import webapp2
 #from jinja2 import Environment, PackageLoader
 import jinja2
+import random
 
 from google.appengine.ext import db
 
@@ -28,6 +29,22 @@ class MainPage(Handler):
     def get(self):
         template = env.get_template('front.html')
         self.render(template)
+		
+class Admin(Handler):
+	def get(self):
+		people = db.GqlQuery("SELECT * "
+							 "FROM Person "
+							 "ORDER BY date DESC")
+		emails=[]
+		names=[]
+		
+		for person in people:
+			names.append(person.name)
+			
+		random.shuffle(names)
+		template=env.get_template('admin.html')
+		self.response.out.write(template.render({'people': people, 'names':names}))	
+			
 		
 class ThankYou(Handler):
 	def post(self):
@@ -62,5 +79,6 @@ class ThankYou(Handler):
 
 app = webapp2.WSGIApplication([('/', MainPage),
 								('/thanks.html', ThankYou),
+								('/admin.html', Admin),
 	],
 	debug=True)
