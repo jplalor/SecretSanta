@@ -37,11 +37,24 @@ class Admin(Handler):
 							 "ORDER BY date DESC")
 		emails=[]
 		names=[]
+		people2=[]
+		canSend = False
 		
 		for person in people:
 			names.append(person.name)
+			people2.append(person.name)
 			
 		random.shuffle(names)
+		
+		while canSend == False:
+			for person in people2:
+				if person == names[people2.index(person)]:
+					random.shuffle(names)
+					canSend=False
+					break
+				else:
+					canSend = True
+		
 		template=env.get_template('admin.html')
 		self.response.out.write(template.render({'people': people, 'names':names}))	
 			
