@@ -7,6 +7,7 @@ import jinja2
 import random
 
 from google.appengine.ext import db
+from google.appengine.api import mail
 
 env = jinja2.Environment(autoescape=True,
 	loader=jinja2.FileSystemLoader('templates'))
@@ -71,6 +72,52 @@ class ThankYou(Handler):
 							 "ORDER BY date DESC")
 		template=env.get_template('thanks.html')
 		self.response.out.write(template.render({'people': people}))
+		
+#class SendMail(Handler):
+#	def get(self):
+#		people = db.GqlQuery("SELECT * "
+#							 "FROM Person "
+#							 "ORDER BY date DESC")
+#		emails=[]
+#		names=[]
+#		people2=[]
+#		i=0
+#		text_output=""
+#		canSend = False
+#		
+#		for person in people:
+#			names.append(person.name)
+#			emails.append(person.email)
+#			people2.append(person.name)
+#			
+#		random.shuffle(names)
+#		
+#		while canSend == False:
+#			for person in people2:
+#				if person == names[people2.index(person)]:
+#					random.shuffle(names)
+#					canSend=False
+#					break
+#				else:
+#					canSend = True
+#					
+#		
+#		for email in emails:
+#			email_text = "Hello! this is Hugey the Elf.  This year, for Secret Santa, you will be buying a gift for: %s \n\nMerry Christmas!!" % names[i]
+#			mail.send_mail(sender="Hugey the Elf <hugeytheelf@gmail.com>",
+#			              to=email,
+#						  subject="Merry Christmas! Here is your Secret Santa Information!",
+#						  body=email_text)
+#			
+#			i +=1
+#			
+#			text_output = text_output+ "Email sent to "+email + " with text: "+email_text+"\r\n\r\n"
+#		
+		#dont need a template in this instance
+#		template=env.get_template('sendemail.html')
+#		self.response.out.write(template.render({'text_output': text_output}))	
+	
+		
 
 
 #class Handler(webapp2.RequestHandler):
@@ -93,5 +140,6 @@ class ThankYou(Handler):
 app = webapp2.WSGIApplication([('/', MainPage),
 								('/thanks.html', ThankYou),
 								('/admin.html', Admin),
+#								('/sendmail.html', SendMail),
 	],
 	debug=True)
